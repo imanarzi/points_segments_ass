@@ -1,4 +1,6 @@
 #include "points_segments.h"
+int L = 0;
+int P = 0;
 
 void print_array(int *arr, int size){
 	for (int i=0; i<size; i++){
@@ -16,7 +18,13 @@ void print_array_2D(int **arr, int rows, int cols){
 	}
 	printf("\n");
 }
-
+void points_segments_naive(int lines[][L], int n_lines, int points[][P], int n_points){
+        for(int i = 0; i < n_points; i++)
+                for(int j = 0; j < n_lines; j++){
+                        if(points[i][0] >= lines[j][0] && points[i][0] <= lines[j][1])
+                                points[i][1]++;
+                }
+}
 
 int main() {	
 	const char * files[] = {"input1.txt", "input2.txt", "input3.txt"};   
@@ -51,15 +59,34 @@ int main() {
 			}
 			
 			printf("There are total %d segments, and %d points\n", s, p);
-			
+			L = s;
+			P = p;
 			print_array_2D(segments, s, 2);
 			print_array(points, p);
 			//TODO: pass s, p, segments, and points to your two algorithms
 			//the output should be an array of size p containing 
 			//-for each point- the number of covering segments 
-			
+			int points_qsort[][p];
+			int points_naive[][p];
+			for(int i = 0; i < p; i++){
+				points_qsort[i][0] = points[i];
+				points_naive[i][0] = points[i];
+			}
+			points_segments_qsort(segments, s, points_qsort, p);	
+			points_segments_naive(segments, s, points_naive, p);
 			//TODO: implement - compare these outputs from 2 algorithms
-			
+			int passed = 1;
+			for(int i = 0; i < p; i++){
+				if(points_naive != points_qsort)
+					passed = 0;
+			} 
+			if(passed){
+				printf("OK\n");
+			}
+			else{
+				printf("FAILED\n");
+				break;
+			}
 		}
 		fclose(pfile);
 	}

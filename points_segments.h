@@ -6,4 +6,6 @@
 
 void print_array(int *arr, int size);
 void print_array_2D(int **arr, int rows, int cols);
+void points_segments_naive()
+void points_segments_qsort()
 #endif

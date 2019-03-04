@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int I = 2;
-int S = 3;
+int I = s;
+int S = p;
 void points_segments_naive(int lines[][I], int n_lines, int points[][S], int n_points){
 	for(int i = 0; i < n_points; i++)
 		for(int j = 0; j < n_lines; j++){
@@ -11,7 +11,7 @@ void points_segments_naive(int lines[][I], int n_lines, int points[][S], int n_p
 		} 
 }
 
-int main(){
+/*int main(){
 	int n_lines = 3;
 	int n_points = 3;
 	//int lines[n_lines][2];
@@ -22,4 +22,4 @@ int main(){
 	
 	points_segments_naive(lines, n_lines, points, n_points);
 	printf("%d %d %d\n", points[0][1], points[1][1], points[2][1]);
-}
+}*/
