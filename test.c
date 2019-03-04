@@ -1,7 +1,16 @@
 #include "points_segments.h"
+//extern L;
+//extern P;
+
 int L = 0;
 int P = 0;
-
+int point_comparator(const void * p, const void * q){
+	int a = *(const int *)p; 
+    	int b = *(const int *)q;
+	if(a < b)
+		return -1;
+	return 1;
+}
 void print_array(int *arr, int size){
 	for (int i=0; i<size; i++){
 		printf("%d ",arr[i]);	
@@ -18,7 +27,7 @@ void print_array_2D(int **arr, int rows, int cols){
 	}
 	printf("\n");
 }
-void points_segments_naive(int lines[][L], int n_lines, int points[][P], int n_points){
+void points_segments_naive(int** lines, int n_lines, int ** points, int n_points){
         for(int i = 0; i < n_points; i++)
                 for(int j = 0; j < n_lines; j++){
                         if(points[i][0] >= lines[j][0] && points[i][0] <= lines[j][1])
@@ -57,7 +66,7 @@ int main() {
 			for (int i=0; i < p; i++){
 				fscanf(pfile, "%d", &points[i]);
 			}
-			
+			qsort((void*)points, p, sizeof(int), point_comparator);
 			printf("There are total %d segments, and %d points\n", s, p);
 			L = s;
 			P = p;
@@ -66,8 +75,14 @@ int main() {
 			//TODO: pass s, p, segments, and points to your two algorithms
 			//the output should be an array of size p containing 
 			//-for each point- the number of covering segments 
-			int points_qsort[][p];
-			int points_naive[][p];
+			int ** points_qsort = malloc(p*sizeof(int *));
+                        for (int i=0; i < p; i++){
+                                points_qsort[i] = malloc(2*sizeof(int));
+                        }
+			int ** points_naive = malloc(p*sizeof(int *));
+                        for (int i=0; i < p; i++){
+                                points_naive[i] = malloc(2*sizeof(int));
+                        }
 			for(int i = 0; i < p; i++){
 				points_qsort[i][0] = points[i];
 				points_naive[i][0] = points[i];
@@ -77,7 +92,8 @@ int main() {
 			//TODO: implement - compare these outputs from 2 algorithms
 			int passed = 1;
 			for(int i = 0; i < p; i++){
-				if(points_naive != points_qsort)
+				printf("n: %d q: %d\n", points_naive[i][1], points_qsort[i][1]);
+				if(points_naive[i][1] != points_qsort[i][1])
 					passed = 0;
 			} 
 			if(passed){
@@ -87,6 +103,17 @@ int main() {
 				printf("FAILED\n");
 				break;
 			}
+		free(points);
+                for(int i = 0; i < s; i++)
+                        free(segments[i]);
+                free(segments);
+		for(int i = 0; i < p; i++)
+                        free(points_naive[i]);
+                free(points_naive);
+		for(int i = 0; i < p; i++)
+                        free(points_qsort[i]);
+                free(points_qsort);
+                //fclose(pfile);
 		}
 		fclose(pfile);
 	}

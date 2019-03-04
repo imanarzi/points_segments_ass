@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "points_segments.h"
 
-extern L;
-extern P;
+//extern int L;
+//extern int P;
 int start = -1000;
 int point = 0;
 int end = 1000;
@@ -22,7 +23,7 @@ int comparator(const void* p, const void* q){
 }
 
 
-void points_segments_qsort(int lines[][L], int n_lines, int points[][P], int n_points){
+void points_segments_qsort(int** lines, int n_lines, int** points, int n_points){
         int len = n_lines * 2 + n_points;
 	int arr[len][2];
 	//printf("%d", len);
@@ -51,6 +52,10 @@ void points_segments_qsort(int lines[][L], int n_lines, int points[][P], int n_p
 	int c = 0;
 	if(arr[0][1] == start)
 		s++;
+	if(arr[0][1] == point){
+		points[c][1] = s;
+		c++;
+	}
 	for(int i = 1; i < len; i++){
 		if(arr[i][1] == start) 
 			s++;
@@ -61,20 +66,31 @@ void points_segments_qsort(int lines[][L], int n_lines, int points[][P], int n_p
 		if(arr[i][1] == end)
 			s--;
 	}
+	/*for(int i = 0; i < c; i++){
+                printf("points: %d\n", points[i][1]);
+        }*/
 			
  
 		
 }
 
-int main(){
+/*int main(){
         int n_lines = 3;
         int n_points = 3;
         //int lines[n_lines][2];
         //int points[n_points]; 
         
         int lines[][2] = {{1, 3}, {2, 5}, {10, 13}};
-        int points[][3] = {{2, 0}, {3, 0}, {4, 0}};
+        int points[][2] = {{2, 0}, {3, 0}, {4, 0}};
         
-        points_segments_qsort(lines, n_lines, points, n_points);
-        printf("%d %d %d\n", points[0][1], points[1][1], points[2][1]);
-} 
+	int ** l = malloc(sizeof(int *)*3);
+	int ** p = malloc(sizeof(int *)* 3);
+	for(int i = 0; i < 3; i++){
+		l[i] = malloc(sizeof(int) * 2);
+		p[i] = malloc(sizeof(int) * 2);
+	}
+	l = {{1, 3}, {2, 5}, {10, 13}};
+	p = {{2, 0}, {3, 0}, {4, 0}};
+        points_segments_qsort(l, n_lines, p, n_points);
+        printf("%d %d %d\n", p[0][1], p[1][1], p[2][1]);
+} */
